@@ -38,7 +38,7 @@ class CreateClubScreen extends StatelessWidget {
         }
       }, builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(title: const Text("انشاء نادى")),
+          appBar: AppBar(title: const Text("انشاء نادي")),
           body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.5.w, vertical: 20.h),
             child: ListView(

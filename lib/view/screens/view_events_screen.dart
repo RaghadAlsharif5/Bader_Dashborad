@@ -45,7 +45,7 @@ class ViewEventsScreen extends StatelessWidget {
                             })
                         : Center(
                             child: Text(
-                              "لم يتم اضافه فعاليات حتي الآن",
+                              "لم يتم اضافه فعاليات حتى الآن",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 17.sp,

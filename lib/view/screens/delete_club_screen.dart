@@ -49,7 +49,7 @@ class DeleteClubScreen extends StatelessWidget {
                             })
                         : Center(
                             child: Text(
-                              "لم يتم اضافه أندية حتي الآن",
+                              "لم يتم اضافه أندية حتى الآن",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 17.sp,

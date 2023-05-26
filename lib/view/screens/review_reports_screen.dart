@@ -66,7 +66,7 @@ class ReviewReportsScreen extends StatelessWidget {
                             })
                         : Center(
                             child: Text(
-                              "لم يتم اضافه تقارير حتي الآن",
+                              "لم يتم اضافه تقارير حتى الآن",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 17.sp,

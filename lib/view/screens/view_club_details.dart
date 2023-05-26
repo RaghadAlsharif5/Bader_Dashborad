@@ -138,7 +138,7 @@ Widget _clubDetailsBody({required ClubModel model, required bool isMobile}) {
           isMobile: isMobile,
           text: model.leaderEmail != null
               ? model.leaderName!
-              : "لم يتم تعيين قائد حتي الآن"),
+              : "لم يتم تعيين قائد حتى الآن"),
       SizedBox(
         height: 2.5.h,
       ),
@@ -166,7 +166,7 @@ Widget _clubDetailsBody({required ClubModel model, required bool isMobile}) {
           isMobile: isMobile,
           text: model.memberNum != null
               ? model.memberNum.toString()
-              : "لم يتم تحديد عدد الأعضاء حتي الآن"),
+              : "لم يتم تحديد عدد الأعضاء حتى الآن"),
       SizedBox(
         height: 2.5.h,
       ),
@@ -182,7 +182,7 @@ Widget _clubDetailsBody({required ClubModel model, required bool isMobile}) {
           isMobile: isMobile,
           text: model.committees != null
               ? model.committees!.join(" - ")
-              : "لم يتم تحديد اللجان حتي الآن"),
+              : "لم يتم تحديد اللجان حتى الآن"),
       if (model.contactAccounts != null)
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
