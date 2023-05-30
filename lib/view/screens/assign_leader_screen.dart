@@ -25,23 +25,26 @@ class AssignClubLeaderScreen extends StatelessWidget {
       child: BlocConsumer<DashBoardCubit, DashBoardStates>(
           listener: (context, state) {
         if (state is AssignLeaderToClubSuccessState) {
+          Navigator.pop(context);
           cubit.selectedClubName = null;
           cubit.selectedLeaderEmail = null;
           showSnackBar(
               context: context,
-              message: "تم تعيين المستخدم كقائد",
+              message: "تم تعيين المستخدم ك قائد بنجاح",
               backgroundColor: Colors.green);
-          Navigator.pop(context);
         }
         if (state is FailedToAssignLeaderToClubState) {
           showSnackBar(
               context: context,
-              message: "حدث خطأ ما الرجاء المحاولة لاحقًا",
+              message: "حدث خطأ ما الرجاء المحاولة لاحقا",
               backgroundColor: Colors.red);
         }
       }, builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(title: const Text("تعيين قائد")),
+          appBar: AppBar(
+            title: const Text("تعيين قائد"),
+            leading: BackButton(onPressed: () => Navigator.pop(context)),
+          ),
           body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.5.w, vertical: 20.h),
             child: ListView(
@@ -63,7 +66,7 @@ class AssignClubLeaderScreen extends StatelessWidget {
                       BoxDecoration(border: Border.all(color: Colors.grey)),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton(
-                      hint: const Text("اختار"),
+                      hint: const Text("أختر"),
                       value: cubit.selectedClubName,
                       onChanged: (val) {
                         cubit.chooseClubNameFromDropDownButton(value: val!);
@@ -139,6 +142,8 @@ class AssignClubLeaderScreen extends StatelessWidget {
                             await cubit.getInfoForClubChosenFromDropDownButton(
                                 clubName: cubit.selectedClubName!);
                         await cubit.assignClubLeader(
+                            receiverFirebaseFCMToken:
+                                leader.firebaseMessagingToken!,
                             clubName: cubit.selectedClubName!,
                             clubID: club.id.toString(),
                             leaderID: leader.id!,

@@ -59,7 +59,7 @@ class ViewClubsScreen extends StatelessWidget {
                             })
                         : Center(
                             child: Text(
-                              "لم يتم اضافه أندية حتى الآن",
+                              "لم تتم اضافه أندية حتى الآن",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 17.sp,

@@ -37,6 +37,7 @@ class ClubModel{
     contactAccounts = json['contactAccounts'] != null ? ContactMeansForClubModel.fromJson(json: json['contactAccounts']) : null;
   }
 
+  // انا بعت داتا ب null لان اللي هيبقي يسند لهم قيمه هو الليدر
   Map<String,dynamic> toJson(){
     return {
       'name' : name,

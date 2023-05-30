@@ -32,7 +32,7 @@ class CreateClubScreen extends StatelessWidget {
           showSnackBar(
               context: context,
               message:
-                  "حدث خطأ ما اثناء انشاء النادي الرجاء التأكد من حاله الاتصال بالشبكة",
+                  "حدث خطأ ما اثناء انشاء النادي الرجاء التحقق من حاله الشبكة",
               backgroundColor: Colors.red,
               seconds: 5);
         }
@@ -69,7 +69,7 @@ class CreateClubScreen extends StatelessWidget {
                   height: 12.h,
                 ),
                 Text(
-                  "الكليه",
+                  "الكلية",
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp),
                 ),
@@ -84,7 +84,7 @@ class CreateClubScreen extends StatelessWidget {
                       BoxDecoration(border: Border.all(color: Colors.grey)),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton(
-                      hint: const Text("اختار"),
+                      hint: const Text("أختر"),
                       value: cubit.selectedCollege,
                       onChanged: (val) {
                         cubit.chooseCollege(value: val!);
@@ -119,22 +119,21 @@ class CreateClubScreen extends StatelessWidget {
                           cubit.selectedCollege == null) {
                         showSnackBar(
                             context: context,
-                            message: "الرجاء إدخال البيانات كامله !!",
+                            message: "الرجاء إدخال البيانات كاملة !!",
                             backgroundColor: Colors.red);
                       } else if (cubit.clubsNames
                               .contains(clubName.text.trim()) ==
                           true) {
                         showSnackBar(
                             context: context,
-                            message:
-                                "الرجاء اختيار اسم أخر للنادي الجديد لوجود نادي بهذا الإسم",
+                            message: "تم انشاء هذا النادي من قبل",
                             backgroundColor: Colors.red);
                       }
                     },
                     minWidth: double.infinity,
                     child: Text(
                       state is CreateClubLoadingState
-                          ? "انتظر لثواني"
+                          ? "أنتظر لثواني"
                           : "إنشاء",
                       style: TextStyle(
                           color: Colors.white,

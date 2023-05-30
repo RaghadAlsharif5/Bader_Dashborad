@@ -40,9 +40,7 @@ class ReviewReportsScreen extends StatelessWidget {
             }
             if (state is AcceptOrRejectPlanForClubSuccessState) {
               Navigator.pop(context);
-              showSnackBar(
-                  context: context,
-                  message: "تم إرسال نتيجة المراجعة لقائد النادي");
+              showSnackBar(context: context, message: "تم الارسال بنجاح ");
             }
           },
           builder: (context, state) {

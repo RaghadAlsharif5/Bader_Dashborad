@@ -31,7 +31,7 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
     final model = NotifyModel(
         receiveDate: Constants.getTimeNow(),
         clubID: clubID,
-        notifyMessage: 'لقد تم تعيينك كقائد لنادي $clubName',
+        notifyMessage: 'لقد تم تعيينك ك قائد لنادي $clubName',
         fromAdmin: true,
         notifyType: NotificationType.adminMakesYouALeaderOnSpecificClub.name);
     try {
@@ -52,7 +52,6 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
     emit(ChooseCollegeState());
   }
 
-  // ده هتتعرض في dropDownButton عند انشاء نادي
   List<String> colleges = [
     "كلية علوم وهندسة الحاسب الآلي",
     "كلية الآداب والعلوم الإنسانية",
@@ -126,7 +125,7 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
       await launch(link);
     } else {
       emit(ErrorDuringOpenPdfState(
-          message: "حدث خطأ عند محاوله فتح المرفق, برجاء المحاوله لاحقًا"));
+          message: "حدث خطأ ما عند محاوله فتح الرابط, الرجاء المحاوله لاحقا"));
     }
   }
 
@@ -156,7 +155,6 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
     emit(GetClubsWithoutLeaderSuccessState());
   }
 
-  // TODO: DropDownButton ( Related to : Assign Leader to Club Screen )
   String? selectedClubName;
   void chooseClubNameFromDropDownButton({required String value}) {
     selectedClubName = value;
@@ -185,10 +183,14 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
   }
 
   // Todo: Remove Club
-  Future<void> deleteClub({required String clubID}) async {
+  Future<void> deleteClub({required ClubModel club}) async {
     emit(DeleteClubLoadingState());
     try {
-      await dashboardRepository.deleteClub(clubID: clubID);
+      await dashboardRepository.deleteClub(club: club);
+      await dashboardRepository.notifyUserOrAllUsersUsingFCMAPI(
+          notifyType: NotificationType.deleteClubForEver,
+          notifyBody: "لقد تم حذف نادي ${club.name!}",
+          toAllUsersNotToSpecificOne: true);
       await getAllClubs();
       emit(DeleteClubSuccessState());
     } on FirebaseException catch (e) {
@@ -200,6 +202,7 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
   // Todo: Assign Club Leader
   Future<void> assignClubLeader(
       {required String clubName,
+      required String receiverFirebaseFCMToken,
       required String clubID,
       required String leaderID,
       required String leaderName,
@@ -211,6 +214,11 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
           leaderID: leaderID,
           leaderEmail: leaderEmail,
           leaderName: leaderName);
+      await dashboardRepository.notifyUserOrAllUsersUsingFCMAPI(
+          receiverFirebaseFCMToken: receiverFirebaseFCMToken,
+          notifyType: NotificationType.adminMakesYouALeaderOnSpecificClub,
+          notifyBody: "لقد تم تعيينك قائد لنادي $clubName",
+          toAllUsersNotToSpecificOne: false);
       // Todo: Send Notification to Leader that you assigned to Know about his new role
       bool sendNotification =
           await sendNotifyToUserAfterMakingHimALeaderOnSpecificClub(

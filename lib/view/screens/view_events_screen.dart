@@ -3,18 +3,17 @@ import 'package:bader_dashboard/view_model/dashboard_cubit/dashboard_cubit.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../model/event_model.dart';
 import '../../shared/components/colors.dart';
 import '../../view_model/dashboard_cubit/dashboard_states.dart';
-import '../widgets/drawer_item.dart';
 
 class ViewEventsScreen extends StatelessWidget {
   const ViewEventsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final cubit = DashBoardCubit.getInstance(context);
+    final isMobile = MediaQuery.of(context).size.width < 600;
+    final cubit = DashBoardCubit.getInstance(context)..getEvents();
     return Directionality(
         textDirection: TextDirection.rtl,
         child: BlocConsumer<DashBoardCubit, DashBoardStates>(
@@ -23,13 +22,13 @@ class ViewEventsScreen extends StatelessWidget {
             return Scaffold(
                 appBar: AppBar(title: const Text("الفعاليات")),
                 body: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
-                    child: cubit.reports.isNotEmpty
+                    padding: EdgeInsets.symmetric(
+                        horizontal: isMobile ? 12.w : 6.w, vertical: 12.h),
+                    child: cubit.events.isNotEmpty
                         ? ListView.separated(
-                            itemCount: cubit.reports.length,
+                            itemCount: cubit.events.length,
                             separatorBuilder: (context, index) => SizedBox(
-                                  height: 15.h,
+                                  height: 10.h,
                                 ),
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
@@ -41,11 +40,12 @@ class ViewEventsScreen extends StatelessWidget {
                                   },
                                   child: _eventItem(
                                       model: cubit.events[index],
-                                      context: context));
+                                      context: context,
+                                      isMobile: isMobile));
                             })
                         : Center(
                             child: Text(
-                              "لم يتم اضافه فعاليات حتى الآن",
+                              "لم تتم اضافه فعاليات حتى الآن",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 17.sp,
@@ -57,9 +57,13 @@ class ViewEventsScreen extends StatelessWidget {
   }
 }
 
-Widget _eventItem({required EventModel model, required BuildContext context}) {
+Widget _eventItem(
+    {required EventModel model,
+    required BuildContext context,
+    required bool isMobile}) {
   return Container(
-    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+    padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 6.w : 2.5.w, vertical: 10.h),
     decoration: const BoxDecoration(color: greyColor),
     child: ListTile(
       contentPadding: EdgeInsets.zero,
@@ -86,6 +90,8 @@ Widget _eventItem({required EventModel model, required BuildContext context}) {
 
 void _openEventDetails(
     {required BuildContext context, required EventModel model}) {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => ViewEventDetails(model: model)));
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => EventDetailsScreen(model: model)));
 }

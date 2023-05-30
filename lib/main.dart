@@ -1,6 +1,5 @@
 import 'package:bader_dashboard/repositories/auth_repo.dart';
 import 'package:bader_dashboard/repositories/dashboard_repo.dart';
-import 'package:bader_dashboard/shared/Constants/constants.dart';
 import 'package:bader_dashboard/shared/bloc_observer/bloc_observer.dart';
 import 'package:bader_dashboard/shared/components/colors.dart';
 import 'package:bader_dashboard/view/screens/assign_leader_screen.dart';
@@ -28,7 +27,8 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+  // final sharedPref = await SharedPreferences.getInstance();
+  // Constants.kAdminID = sharedPref.getString('adminID');
   runApp(const MyApp());
 }
 
@@ -57,7 +57,6 @@ class MyApp extends StatelessWidget {
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
-              title: "Bader Dashborad",
               home: child,
               routes: {
                 "dashboard_screen": (context) => const DashboardScreen(),

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bader_dashboard/model/event_model.dart';
 import 'package:bader_dashboard/model/notification_model.dart';
 import 'package:bader_dashboard/shared/Constants/constants.dart';
@@ -5,6 +7,7 @@ import 'package:bader_dashboard/shared/Constants/enumeration.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../model/club_model.dart';
 import '../model/report_model.dart';
+import 'package:http/http.dart' as http;
 
 class DashboardRepository {
   Future<int> getIdForLastClubCreated() async {
@@ -34,10 +37,16 @@ class DashboardRepository {
         .set(model.toJson());
   }
 
-  Future<void> deleteClub({required String clubID}) async {
+  Future<void> deleteClub({required ClubModel club}) async {
+    if (club.leaderID != null) {
+      await FirebaseFirestore.instance
+          .collection(Constants.kUsersCollectionName)
+          .doc(club.leaderID!)
+          .update({"idForClubLead": null, "isALeader": false});
+    }
     await FirebaseFirestore.instance
         .collection(Constants.kClubsCollectionName)
-        .doc(clubID)
+        .doc(club.id.toString())
         .delete();
   }
 
@@ -102,7 +111,10 @@ class DashboardRepository {
 
   Future<List<EventModel>> getEvents() async {
     List<EventModel> events = [];
-    await FirebaseFirestore.instance.collection('Events').get().then((value) {
+    await FirebaseFirestore.instance
+        .collection(Constants.kEventsCollectionName)
+        .get()
+        .then((value) async {
       for (var item in value.docs) {
         events.add(EventModel.fromJson(json: item.data()));
       }
@@ -124,6 +136,39 @@ class DashboardRepository {
     }
   }
 
+  Future<bool> notifyUserOrAllUsersUsingFCMAPI(
+      {String? receiverFirebaseFCMToken,
+      required NotificationType notifyType,
+      required String notifyBody,
+      required bool toAllUsersNotToSpecificOne}) async {
+    try {
+      Uri apiUri = Uri.parse("https://fcm.googleapis.com/fcm/send");
+      await http.post(apiUri,
+          headers: {
+            'Content-Type': "application/json",
+            'Authorization': Constants.serverKey
+          },
+          body: jsonEncode({
+            "to": toAllUsersNotToSpecificOne
+                ? "/topics/all"
+                : receiverFirebaseFCMToken!,
+            "notification": {
+              "title": "بادر",
+              "body": notifyBody,
+              "mutable_content": true,
+              "sound": "default"
+            },
+            "priority": "high",
+            "data": {
+              "type": notifyType.name,
+            }
+          }));
+      return true;
+    } on FirebaseException catch (e) {
+      return false;
+    }
+  }
+
   Future<ClubModel> getDataForSpecificClub({required String clubID}) async {
     late ClubModel club;
     await FirebaseFirestore.instance
@@ -138,9 +183,7 @@ class DashboardRepository {
 
   Future<void> acceptOrRejectPlanForClub(
       {required ReportModel report, required bool responseStatus}) async {
-    ClubModel clubModel = await getDataForSpecificClub(
-        clubID: report
-            .clubID!); // TODO: عشان بس محتاج id بتاع القائد عشان ابعت له notification
+    ClubModel clubModel = await getDataForSpecificClub(clubID: report.clubID!);
     NotifyModel notifyModel = NotifyModel(
         receiveDate: Constants.getTimeNow(),
         notifyType: responseStatus

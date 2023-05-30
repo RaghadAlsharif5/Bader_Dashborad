@@ -143,7 +143,7 @@ Widget _clubDetailsBody({required ClubModel model, required bool isMobile}) {
         height: 2.5.h,
       ),
       Text(
-        "الكليه",
+        "الكلية",
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: isMobile ? 16.sp : 18.sp),
       ),
@@ -191,7 +191,7 @@ Widget _clubDetailsBody({required ClubModel model, required bool isMobile}) {
               height: 2.5.h,
             ),
             Text(
-              "حساب الإيميل",
+              "البريد الالكتروني",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: isMobile ? 16.sp : 18.sp),
@@ -205,7 +205,7 @@ Widget _clubDetailsBody({required ClubModel model, required bool isMobile}) {
               height: 2.5.h,
             ),
             Text(
-              "حساب تويتر",
+              " تويتر",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: isMobile ? 16.sp : 18.sp),

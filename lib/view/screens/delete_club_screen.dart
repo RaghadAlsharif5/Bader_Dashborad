@@ -88,7 +88,7 @@ Widget _clubItem(
                     content: FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Text(
-                          "هل تريد حذف النادي بالفعل",
+                          "؟هل تريد حذف النادي بالفعل",
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -109,7 +109,7 @@ Widget _clubItem(
                                     fontSize: 15.sp),
                               ),
                               onTap: () {
-                                cubit.deleteClub(clubID: model.id.toString());
+                                cubit.deleteClub(club: model);
                                 Navigator.pop(context);
                               },
                             ),
