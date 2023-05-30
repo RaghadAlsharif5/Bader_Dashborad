@@ -37,7 +37,7 @@ class AuthCubit extends Cubit<AuthStates> {
                   .trim()) // لازم يكون البريد هو نفسه اللي في Firestore
       {
         if (adminModel!.password !=
-            password) // معناها ان هو دخل على نسيت كلمه السر وغيرها
+            password) // معناها ان هو دخل علي نسيت كلمه السر وغيره
         {
           await authRepository.updateAdminPassword(
               newPassword: password, adminID: userCredential.user!.uid);

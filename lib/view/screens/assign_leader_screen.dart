@@ -30,7 +30,7 @@ class AssignClubLeaderScreen extends StatelessWidget {
           cubit.selectedLeaderEmail = null;
           showSnackBar(
               context: context,
-              message: "تم تعيين المستخدم ك قائد بنجاح",
+              message: "تم تعيين المستخدم ك قائد",
               backgroundColor: Colors.green);
         }
         if (state is FailedToAssignLeaderToClubState) {
@@ -143,7 +143,7 @@ class AssignClubLeaderScreen extends StatelessWidget {
                                 clubName: cubit.selectedClubName!);
                         await cubit.assignClubLeader(
                             receiverFirebaseFCMToken:
-                                leader.firebaseMessagingToken!,
+                                leader.firebaseMessagingToken,
                             clubName: cubit.selectedClubName!,
                             clubID: club.id.toString(),
                             leaderID: leader.id!,
@@ -153,7 +153,7 @@ class AssignClubLeaderScreen extends StatelessWidget {
                     },
                     minWidth: double.infinity,
                     child: Text(
-                      state is CreateClubLoadingState
+                      state is AssignLeaderToClubLoadingState
                           ? "جاري التعيين"
                           : "تعيين",
                       style: TextStyle(

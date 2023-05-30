@@ -31,7 +31,7 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
     final model = NotifyModel(
         receiveDate: Constants.getTimeNow(),
         clubID: clubID,
-        notifyMessage: 'لقد تم تعيينك ك قائد لنادي $clubName',
+        notifyMessage: 'لقد تم تعيينك ك أدمن لنادي $clubName',
         fromAdmin: true,
         notifyType: NotificationType.adminMakesYouALeaderOnSpecificClub.name);
     try {
@@ -125,7 +125,7 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
       await launch(link);
     } else {
       emit(ErrorDuringOpenPdfState(
-          message: "حدث خطأ ما عند محاوله فتح الرابط, الرجاء المحاوله لاحقا"));
+          message: "حدث خطأ ما عند محاوله فتح اللينك، برجاء المحاوله لاحقا"));
     }
   }
 
@@ -141,7 +141,6 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
     emit(ChooseALeaderSuccessState());
   }
 
-  // TODO: Get ALl Users to choose between them on select Leader ( Related to : Assign Leader to Club Screen )
   List<ClubModel> clubsWithoutLeaderData = [];
   Future<void> getClubsWithoutLeader() async {
     clubsWithoutLeaderData.clear();
@@ -202,7 +201,7 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
   // Todo: Assign Club Leader
   Future<void> assignClubLeader(
       {required String clubName,
-      required String receiverFirebaseFCMToken,
+      String? receiverFirebaseFCMToken,
       required String clubID,
       required String leaderID,
       required String leaderName,
@@ -214,11 +213,12 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
           leaderID: leaderID,
           leaderEmail: leaderEmail,
           leaderName: leaderName);
-      await dashboardRepository.notifyUserOrAllUsersUsingFCMAPI(
-          receiverFirebaseFCMToken: receiverFirebaseFCMToken,
-          notifyType: NotificationType.adminMakesYouALeaderOnSpecificClub,
-          notifyBody: "لقد تم تعيينك قائد لنادي $clubName",
-          toAllUsersNotToSpecificOne: false);
+      if (receiverFirebaseFCMToken != null)
+        await dashboardRepository.notifyUserOrAllUsersUsingFCMAPI(
+            receiverFirebaseFCMToken: receiverFirebaseFCMToken,
+            notifyType: NotificationType.adminMakesYouALeaderOnSpecificClub,
+            notifyBody: "لقد تم تعيينك أدمن لنادي $clubName",
+            toAllUsersNotToSpecificOne: false);
       // Todo: Send Notification to Leader that you assigned to Know about his new role
       bool sendNotification =
           await sendNotifyToUserAfterMakingHimALeaderOnSpecificClub(
@@ -237,7 +237,7 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
   // Todo: Get Clubs Info
   List<ClubModel> clubs = [];
   Future<void> getAllClubs() async {
-    await getNamesForAllClubs();
+    await getNamesForAllClubs(); // TODO: عشان مخليش الادمن ينشأ نادي ب اسم موجود بالفعل
     emit(GetClubsLoadingState());
     try {
       clubs = await dashboardRepository.getClubs();
