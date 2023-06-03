@@ -107,7 +107,7 @@ Widget _clubDetailsBody({required ClubModel model, required bool isMobile}) {
       Center(
           child: ResponsiveText(
               child: Text(
-        "نادي ${model.name!}",
+        " ${model.name!}",
         style: TextStyle(
             color: mainColor,
             fontWeight: FontWeight.bold,
@@ -170,19 +170,19 @@ Widget _clubDetailsBody({required ClubModel model, required bool isMobile}) {
       SizedBox(
         height: 2.5.h,
       ),
-      Text(
+      /*Text(
         "اللجان",
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: isMobile ? 16.sp : 18.sp),
-      ),
+      ),*/
       SizedBox(
         height: 2.5.h,
       ),
-      _containerItem(
+      /* _containerItem(
           isMobile: isMobile,
           text: model.committees != null
               ? model.committees!.join(" - ")
-              : "لم يتم تحديد اللجان حتى الآن"),
+              : "لم يتم تحديد اللجان حتى الآن"),*/
       if (model.contactAccounts != null)
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,

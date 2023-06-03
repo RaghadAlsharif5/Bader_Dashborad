@@ -53,6 +53,7 @@ class DrawerItem extends StatelessWidget {
                         child: Icon(
                           Icons.person,
                           color: Colors.black,
+                          size: 35,
                         ),
                       ),
                     ),
