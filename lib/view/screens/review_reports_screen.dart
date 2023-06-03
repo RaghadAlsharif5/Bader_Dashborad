@@ -45,7 +45,7 @@ class ReviewReportsScreen extends StatelessWidget {
           },
           builder: (context, state) {
             return Scaffold(
-                appBar: AppBar(title: const Text("مراجعة التقارير")),
+                appBar: AppBar(title: const Text("مراجعة الخطط السنوية")),
                 body: Padding(
                     padding:
                         EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),

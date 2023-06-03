@@ -86,7 +86,7 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
     CategoryModel(
         title: "انشاء نادي", iconData: Icons.add, routeName: "create_Club"),
     CategoryModel(
-        title: "مراجعة التقارير",
+        title: "مراجعة الخطط السنوية",
         iconData: Icons.preview,
         routeName: "review_Reports"),
     CategoryModel(
