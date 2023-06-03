@@ -125,7 +125,7 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
       await launch(link);
     } else {
       emit(ErrorDuringOpenPdfState(
-          message: "حدث خطأ ما عند محاوله فتح اللينك، برجاء المحاوله لاحقا"));
+          message: "حدث خطأ ما عند محاوله فتح الرابط الرجاء المحاوله لاحقا"));
     }
   }
 
@@ -295,5 +295,22 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
       debugPrint("Failed To get Events, reason is : ${e.message}");
       emit(FailedToGetEventsState());
     }
+  }
+
+  List<ClubModel> filteredClubsData = [];
+  void searchAboutClub({required String input}) {
+    if (clubs.isNotEmpty) {
+      filteredClubsData = clubs
+          .where((element) =>
+              element.name!.toLowerCase().contains(input.toLowerCase()))
+          .toList();
+      emit(GetFilteredClubsSuccessState());
+    }
+  }
+
+  bool searchEnabled = false;
+  void changeSearchAboutClubStatus({bool? value}) {
+    searchEnabled = value == null ? !searchEnabled : value;
+    emit(ChangeSearchAboutClubStatus());
   }
 }

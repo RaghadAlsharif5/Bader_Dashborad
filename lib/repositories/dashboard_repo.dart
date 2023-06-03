@@ -48,6 +48,16 @@ class DashboardRepository {
         .collection(Constants.kClubsCollectionName)
         .doc(club.id.toString())
         .delete();
+
+    await FirebaseFirestore.instance
+        .collection(Constants.kEventsCollectionName)
+        .doc(club.id.toString())
+        .delete();
+
+    await FirebaseFirestore.instance
+        .collection(Constants.kReportsCollectionName)
+        .doc(club.id.toString())
+        .delete();
   }
 
   Future<List<ClubModel>> getClubs() async {

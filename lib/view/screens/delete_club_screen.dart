@@ -88,7 +88,7 @@ Widget _clubItem(
                     content: FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Text(
-                          "؟هل تريد حذف النادي بالفعل",
+                          "هل ترغب في تأكيد حذف النادي ",
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
