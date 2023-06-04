@@ -31,7 +31,7 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
     final model = NotifyModel(
         receiveDate: Constants.getTimeNow(),
         clubID: clubID,
-        notifyMessage: 'لقد تم تعيينك ك أدمن لنادي $clubName',
+        notifyMessage: 'لقد تم تعيينك ك قائد  $clubName',
         fromAdmin: true,
         notifyType: NotificationType.adminMakesYouALeaderOnSpecificClub.name);
     try {
