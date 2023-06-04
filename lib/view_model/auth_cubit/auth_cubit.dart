@@ -37,7 +37,7 @@ class AuthCubit extends Cubit<AuthStates> {
                   .trim()) // لازم يكون البريد هو نفسه اللي في Firestore
       {
         if (adminModel!.password !=
-            password) // معناها ان هو دخل علي نسيت كلمه السر وغيره
+            password) // معناها ان هو دخل على نسيت كلمه السر وغيره
         {
           await authRepository.updateAdminPassword(
               newPassword: password, adminID: userCredential.user!.uid);
@@ -48,12 +48,11 @@ class AuthCubit extends Cubit<AuthStates> {
         Constants.kAdminID = sharedPref.getString('adminID');
         emit(LoginSuccessState());
       } else {
-        emit(
-            FailedToLoginState(message: "غير مصرح لهذا الحساب بالدخول ك أدمن"));
+        emit(FailedToLoginState(message: "غير مصرح لهذا الحساب بالدخول كأدمن"));
       }
     } on FirebaseAuthException catch (e) {
       debugPrint("Failed To Login as an Admin, reason : ${e.message}");
-      emit(FailedToLoginState(message: "غير مصرح لهذا الحساب بالدخول ك أدمن"));
+      emit(FailedToLoginState(message: "غير مصرح لهذا الحساب بالدخول كأدمن"));
     }
   }
 

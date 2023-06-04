@@ -30,7 +30,7 @@ class AssignClubLeaderScreen extends StatelessWidget {
           cubit.selectedLeaderEmail = null;
           showSnackBar(
               context: context,
-              message: "تم تعيين المستخدم ك قائد",
+              message: "تم تعيين المستخدم كقائد",
               backgroundColor: Colors.green);
         }
         if (state is FailedToAssignLeaderToClubState) {

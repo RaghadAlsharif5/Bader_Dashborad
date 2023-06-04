@@ -194,8 +194,8 @@ class DashboardRepository {
             : NotificationType.rejectPlanForClubYouLead.name,
         fromAdmin: true,
         notifyMessage: responseStatus
-            ? "لقد تم قبول الخطة السنوية التي قمت بتقديمها لنادي ${report.clubName}"
-            : "لقد تم رفض الخطة السنوية التي قمت بتقديمها لنادي ${report.clubName}",
+            ? "لقد تم قبول الخطة السنوية التي قمت بتقديمها إلى ${report.clubName}"
+            : "لقد تم رفض الخطة السنوية التي قمت بتقديمها إلى ${report.clubName}",
         clubID: report.clubID);
     await sendNotification(
         receiverID: clubModel.leaderID!, notifyModel: notifyModel);

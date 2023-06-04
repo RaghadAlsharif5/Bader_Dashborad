@@ -31,7 +31,7 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
     final model = NotifyModel(
         receiveDate: Constants.getTimeNow(),
         clubID: clubID,
-        notifyMessage: 'لقد تم تعيينك ك قائد  $clubName',
+        notifyMessage: 'لقد تم تعيينك كقائد $clubName',
         fromAdmin: true,
         notifyType: NotificationType.adminMakesYouALeaderOnSpecificClub.name);
     try {
@@ -131,7 +131,7 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
     }
   }
 
-  // Todo: ده هستدعيها اما الادمن يضغط علي تعيين القائد في الاخر بعد اما اختار البريد تبع القائد من خلال dropDownButton ( Related to : Assign Leader to Club Screen )
+  // Todo: ده هستدعيها اما الادمن يضغط على تعيين القائد في الاخر بعد اما اختار البريد تبع القائد من خلال dropDownButton ( Related to : Assign Leader to Club Screen )
   Future<UserModel> getInfoForSelectedLeaderFromDropDownButton(
       {required String email}) async {
     return usersThatAreNotLeadersData
@@ -166,7 +166,7 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
     emit(ChooseClubNameSuccessState());
   }
 
-  // Todo: ده هستدعيها اما الادمن يضغط علي تعيين القائد في الاخر بعد اما اختار البريد تبع القائد من خلال dropDownButton  ( Related to : Assign Leader to Club Screen )
+  // Todo: ده هستدعيها اما الادمن يضغط على تعيين القائد في الاخر بعد اما اختار البريد تبع القائد من خلال dropDownButton  ( Related to : Assign Leader to Club Screen )
   Future<ClubModel> getInfoForClubChosenFromDropDownButton(
       {required String clubName}) async {
     return clubs

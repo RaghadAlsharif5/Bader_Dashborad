@@ -120,7 +120,7 @@ Widget _reportItem(
                     } else {
                       showSnackBar(
                           context: context,
-                          message: "تم الموافقة علي هذه الخطة من قبل");
+                          message: "تم الموافقة على هذه الخطة من قبل");
                     }
                   },
                   title: report.isAccepted != null && report.isAccepted == true
