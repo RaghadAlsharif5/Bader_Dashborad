@@ -40,12 +40,14 @@ class ReviewReportsScreen extends StatelessWidget {
             }
             if (state is AcceptOrRejectPlanForClubSuccessState) {
               Navigator.pop(context);
-              showSnackBar(context: context, message: "تم الارسال بنجاح ");
+              showSnackBar(
+                  context: context,
+                  message: "تم إرسال نتيجة المراجعة لقائد النادي");
             }
           },
           builder: (context, state) {
             return Scaffold(
-                appBar: AppBar(title: const Text("مراجعة الخطط السنوية")),
+                appBar: AppBar(title: const Text("مراجعة الخطة السنوية")),
                 body: Padding(
                     padding:
                         EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
@@ -59,7 +61,7 @@ class ReviewReportsScreen extends StatelessWidget {
                             itemBuilder: (context, index) {
                               return _reportItem(
                                   isMobile: isMobile,
-                                  model: cubit.annualPlansReports[index],
+                                  report: cubit.annualPlansReports[index],
                                   context: context);
                             })
                         : Center(
@@ -78,7 +80,7 @@ class ReviewReportsScreen extends StatelessWidget {
 
 Widget _reportItem(
     {required bool isMobile,
-    required ReportModel model,
+    required ReportModel report,
     required BuildContext context}) {
   return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
@@ -87,7 +89,7 @@ Widget _reportItem(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "${model.clubName!} - خطة سنوية",
+            "${report.clubName!} - خطة سنوية",
             style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: isMobile ? 14.5.sp : 16.5.sp,
@@ -101,7 +103,7 @@ Widget _reportItem(
                   color: mainColor,
                   onTap: () {
                     DashBoardCubit.getInstance(context)
-                        .openPdf(link: model.pdfLink!);
+                        .openPdf(link: report.pdfLink!);
                   },
                   title: "عرض",
                   isMobile: isMobile),
@@ -111,24 +113,35 @@ Widget _reportItem(
               _buttonItem(
                   color: Colors.green,
                   onTap: () {
-                    DashBoardCubit.getInstance(context)
-                        .acceptOrRejectPlanForClub(
-                            report: model, responseStatus: true);
+                    if (report.isAccepted == null) {
+                      DashBoardCubit.getInstance(context)
+                          .acceptOrRejectPlanForClub(
+                              report: report, responseStatus: true);
+                    } else {
+                      showSnackBar(
+                          context: context,
+                          message: "تم الموافقة علي هذه الخطة من قبل");
+                    }
                   },
-                  title: "موافقة",
+                  title: report.isAccepted != null && report.isAccepted == true
+                      ? "تمت الموافقة"
+                      : "موافقة",
                   isMobile: isMobile),
-              SizedBox(
-                width: isMobile ? 7.w : 10.w,
-              ),
-              _buttonItem(
-                  color: Colors.red,
-                  onTap: () {
-                    DashBoardCubit.getInstance(context)
-                        .acceptOrRejectPlanForClub(
-                            report: model, responseStatus: false);
-                  },
-                  title: "رفض",
-                  isMobile: isMobile),
+              // TODO: Delete Button will show only if isAccepted == null معناها ان لسه لم يتم الموافقه او رفض الخطة
+              if (report.isAccepted == null)
+                SizedBox(
+                  width: isMobile ? 7.w : 10.w,
+                ),
+              if (report.isAccepted == null)
+                _buttonItem(
+                    color: Colors.red,
+                    onTap: () {
+                      DashBoardCubit.getInstance(context)
+                          .acceptOrRejectPlanForClub(
+                              report: report, responseStatus: false);
+                    },
+                    title: "رفض",
+                    isMobile: isMobile),
             ],
           )
         ],

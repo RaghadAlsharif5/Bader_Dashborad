@@ -52,6 +52,7 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
     emit(ChooseCollegeState());
   }
 
+  // ده هتتعرض في dropDownButton عند انشاء نادي
   List<String> colleges = [
     "كلية علوم وهندسة الحاسب الآلي",
     "كلية الآداب والعلوم الإنسانية",
@@ -86,7 +87,7 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
     CategoryModel(
         title: "انشاء نادي", iconData: Icons.add, routeName: "create_Club"),
     CategoryModel(
-        title: "مراجعة الخطط السنوية",
+        title: "مراجعة الخطة السنوية",
         iconData: Icons.preview,
         routeName: "review_Reports"),
     CategoryModel(
@@ -102,6 +103,7 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
         .get()
         .then((value) {
       for (int count = 0; count < value.docs.length; count++) {
+        // Todo: عشان لو بالفعل قائد لنادي متظهرش الداتا بتاعته
         if (value.docs[count].data()['isALeader'] == false) {
           usersThatAreNotLeadersData
               .add(UserModel.fromJson(json: value.docs[count].data()));
@@ -125,22 +127,25 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
       await launch(link);
     } else {
       emit(ErrorDuringOpenPdfState(
-          message: "حدث خطأ ما عند محاوله فتح الرابط الرجاء المحاوله لاحقا"));
+          message: "حدث خطأ ما عند محاوله فتح الرابط، الرجاء المحاوله لاحقا"));
     }
   }
 
+  // Todo: ده هستدعيها اما الادمن يضغط علي تعيين القائد في الاخر بعد اما اختار البريد تبع القائد من خلال dropDownButton ( Related to : Assign Leader to Club Screen )
   Future<UserModel> getInfoForSelectedLeaderFromDropDownButton(
       {required String email}) async {
     return usersThatAreNotLeadersData
         .firstWhere((element) => element.email!.trim() == email.trim());
   }
 
+  // TODO: ده عشان امرر الايميل لل DropDownButton  ( Related to : Assign Leader to Club Screen )
   String? selectedLeaderEmail;
   void chooseALeaderFromDropDownButton({required String value}) {
     selectedLeaderEmail = value;
     emit(ChooseALeaderSuccessState());
   }
 
+  // TODO: Get ALl Users to choose between them on select Leader ( Related to : Assign Leader to Club Screen )
   List<ClubModel> clubsWithoutLeaderData = [];
   Future<void> getClubsWithoutLeader() async {
     clubsWithoutLeaderData.clear();
@@ -154,12 +159,14 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
     emit(GetClubsWithoutLeaderSuccessState());
   }
 
+  // TODO: ده عشان امرر اسم النادي لل DropDownButton ( Related to : Assign Leader to Club Screen )
   String? selectedClubName;
   void chooseClubNameFromDropDownButton({required String value}) {
     selectedClubName = value;
     emit(ChooseClubNameSuccessState());
   }
 
+  // Todo: ده هستدعيها اما الادمن يضغط علي تعيين القائد في الاخر بعد اما اختار البريد تبع القائد من خلال dropDownButton  ( Related to : Assign Leader to Club Screen )
   Future<ClubModel> getInfoForClubChosenFromDropDownButton(
       {required String clubName}) async {
     return clubs
@@ -263,7 +270,7 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
     }
   }
 
-  List<ReportModel> reports = [];
+  List<ReportModel> reports = []; // ده التقارير بس مش من ضمنها الخطط السنوية
   List<ReportModel> annualPlansReports = [];
   Future<void> getAllReports() async {
     reports.clear();
@@ -295,22 +302,5 @@ class DashBoardCubit extends Cubit<DashBoardStates> {
       debugPrint("Failed To get Events, reason is : ${e.message}");
       emit(FailedToGetEventsState());
     }
-  }
-
-  List<ClubModel> filteredClubsData = [];
-  void searchAboutClub({required String input}) {
-    if (clubs.isNotEmpty) {
-      filteredClubsData = clubs
-          .where((element) =>
-              element.name!.toLowerCase().contains(input.toLowerCase()))
-          .toList();
-      emit(GetFilteredClubsSuccessState());
-    }
-  }
-
-  bool searchEnabled = false;
-  void changeSearchAboutClubStatus({bool? value}) {
-    searchEnabled = value == null ? !searchEnabled : value;
-    emit(ChangeSearchAboutClubStatus());
   }
 }

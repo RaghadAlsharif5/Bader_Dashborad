@@ -48,16 +48,6 @@ class DashboardRepository {
         .collection(Constants.kClubsCollectionName)
         .doc(club.id.toString())
         .delete();
-
-    await FirebaseFirestore.instance
-        .collection(Constants.kEventsCollectionName)
-        .doc(club.id.toString())
-        .delete();
-
-    await FirebaseFirestore.instance
-        .collection(Constants.kReportsCollectionName)
-        .doc(club.id.toString())
-        .delete();
   }
 
   Future<List<ClubModel>> getClubs() async {
@@ -159,6 +149,7 @@ class DashboardRepository {
             'Authorization': Constants.serverKey
           },
           body: jsonEncode({
+            // TODO: Topics/all لان اي حد بيسجل في التطبيق بخليه يعمل subscribe to this topic
             "to": toAllUsersNotToSpecificOne
                 ? "/topics/all"
                 : receiverFirebaseFCMToken!,
@@ -193,7 +184,9 @@ class DashboardRepository {
 
   Future<void> acceptOrRejectPlanForClub(
       {required ReportModel report, required bool responseStatus}) async {
-    ClubModel clubModel = await getDataForSpecificClub(clubID: report.clubID!);
+    ClubModel clubModel = await getDataForSpecificClub(
+        clubID: report
+            .clubID!); // TODO: عشان بس محتاج id بتاع القائد عشان ابعت له notification
     NotifyModel notifyModel = NotifyModel(
         receiveDate: Constants.getTimeNow(),
         notifyType: responseStatus
@@ -204,20 +197,20 @@ class DashboardRepository {
             ? "لقد تم قبول الخطة السنوية التي قمت بتقديمها لنادي ${report.clubName}"
             : "لقد تم رفض الخطة السنوية التي قمت بتقديمها لنادي ${report.clubName}",
         clubID: report.clubID);
-    // TODO: Delete Report from Review Reports as Admin accepted or rejected it already
-    await FirebaseFirestore.instance
-        .collection(Constants.kReportsCollectionName)
-        .doc(report.reportID)
-        .delete();
     await sendNotification(
         receiverID: clubModel.leaderID!, notifyModel: notifyModel);
     if (responseStatus) {
-      // TODO: Save Plan on Club Document
+      // TODO: عشان بعدين في الاسكرينه اعرض كلمه تمت الموافقه بالفعل مثلا
       await FirebaseFirestore.instance
-          .collection(Constants.kClubsCollectionName)
-          .doc(report.clubID)
-          .collection(Constants.kAcceptedAnnualPlanForClubCollectionName)
-          .add(report.toJson());
+          .collection(Constants.kReportsCollectionName)
+          .doc(report.reportID)
+          .update({'isAccepted': true});
+    } else {
+      // TODO: هحذفها في حاله تم الرفض فقط
+      await FirebaseFirestore.instance
+          .collection(Constants.kReportsCollectionName)
+          .doc(report.reportID)
+          .delete();
     }
   }
 }

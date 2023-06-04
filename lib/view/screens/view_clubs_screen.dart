@@ -8,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../model/club_model.dart';
 import '../../view_model/dashboard_cubit/dashboard_states.dart';
-import 'package:bader_dashboard/view/widgets/AppBar.dart';
 
 class ViewClubsScreen extends StatelessWidget {
   const ViewClubsScreen({Key? key}) : super(key: key);
@@ -27,8 +26,6 @@ class ViewClubsScreen extends StatelessWidget {
           },
           builder: (context, state) {
             return Scaffold(
-                appBar: appBarForClubsScreen(
-                    DashBoardCubit: cubit, context: context),
                 body: Padding(
                     padding: EdgeInsets.symmetric(
                         horizontal: 12.w, vertical: isMobile ? 10.h : 15.h),
